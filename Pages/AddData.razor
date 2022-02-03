@@ -1,0 +1,80 @@
+@page "/adddata"
+
+
+<h3>Number of unwatched Movies (@todos.Count(todo => !todo.IsDone))</h3>
+
+
+Title: <input placeholder="Name of movie" @bind="newTitle" />
+Data:  <input type="date"  @bind="newReleaseDate" />
+Genre: <input placeholder="Name of genre" @bind="newGenre" />
+Price: <input placeholder="price" @bind="newPrice">
+Rating: <input @bind="newRating">
+<button class="btn btn-warning" @onclick="AddMovie">Add Movie</button>
+
+@code {
+    private List<TodoItem> todos = new();
+    private string? newTitle;
+    private DateTime newReleaseDate;
+    private string? newGenre;
+    private decimal newPrice;
+    private string? newRating;
+
+    private void AddMovie()
+    {
+        if (!string.IsNullOrWhiteSpace(newTitle))
+        {
+            todos.Add(new TodoItem { Title = newTitle,ReleaseDate = newReleaseDate,Genre = newGenre,Price = newPrice,Rating = newRating });
+            newTitle = string.Empty;
+        }
+    }
+}
+<table class="table table-striped">
+<thead class="thead-dark">
+    <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                ReleaseDate
+            </th>
+            <th>
+                Genre
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Rating
+            </th>
+            <th>
+                Watched
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var todo in todos) {
+        <tr>
+            <td>
+                @todo.Title
+            </td>
+            <td>
+                @todo.ReleaseDate
+            </td>
+            <td>
+                @todo.Genre
+            </td>
+            <td>
+                @todo.Price
+            </td>
+            <td>
+                @todo.Rating
+            </td>
+            <td>
+                <input type="checkbox" @bind="todo.IsDone" />
+            </td>
+            </tr>
+}
+    </tbody>
+</table>
+
+
